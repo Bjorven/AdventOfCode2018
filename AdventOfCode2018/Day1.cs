@@ -4,7 +4,8 @@ using System.IO;
 using System.Text;
 
 namespace AdventOfCode2018
-{public class testDay1
+{
+    public class testDay1
     {
 
     }
