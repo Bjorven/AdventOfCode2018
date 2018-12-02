@@ -11,7 +11,7 @@ namespace AdventOfCode2018
     public class TestDay2
     {
         [Fact]
-        public void testDay2A()
+        public void TestDay2A()
         {
             //Arrange
 
@@ -34,6 +34,23 @@ namespace AdventOfCode2018
             //Assert
             Assert.Equal(expectedResult, result);
         }
+        [Fact]
+        public void TestDay2B()
+        {
+            //ARRANGE
+            string[] exampleInputs = new string[] { "abcde", "fghij", "klmno", "pqrst", "fguij", "axcye", "wvxyz" };
+
+            IEnumerable<string> fakeInputs = exampleInputs;
+            var expectedResult = 2;
+
+            var sut = new Day2();
+
+            //ACT
+            var result = sut.Day2B(fakeInputs);
+
+            //ASSERT
+            Assert.Equal(expectedResult, result.Count());
+        }
     }
     public class Day2
     {
@@ -45,7 +62,7 @@ namespace AdventOfCode2018
         {
 
 
-            foreach (string s in _lines)
+            foreach (string s in input)
             {
                 int count = 0;
                 bool hasFoundTwice = false;
@@ -79,29 +96,39 @@ namespace AdventOfCode2018
                 }
 
             }
-            
             return _foundTwice * _foundtripple;
         }
+
+
+        public IEnumerable<string> Day2B(IEnumerable<string> inputs)
+        {
+            
+
+            if (inputs.Count() == 2)
+                return inputs;
+
+            foreach(string s in inputs)
+            {
+                var result = inputs.TakeWhile(x=> s.Single( )
+
+                //foreach (char c in s)
+                //{
+
+                //    var result = inputs.
+                //    if (result.Count() < 0)
+                //    {
+                //        Day2B(result);
+                //        break;
+                //    }
+                //}
+
+            }
+
+            return null;
+        }
+
+
+
     }
-
-
-
-
-
-    //public static class QueryObjects
-    //{
-
-    //    public static IQueryable<TSource> FindDouble <TSource>(this IQueryable<TSource> @this)
-    //    {
-
-
-    //        var result = @this.Where(x => x);
-
-    //        return result;
-
-    //    }
-
-
-    //}
 
 }
