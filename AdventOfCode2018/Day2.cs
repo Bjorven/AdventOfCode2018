@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
+using FakeItEasy;
+using System.IO;
 
 namespace AdventOfCode2018
 {
@@ -11,21 +14,21 @@ namespace AdventOfCode2018
         public void testDay2A()
         {
             //Arrange
-            string fakeinput1 = "abcdef"; //contains no letters that appear exactly two or three times.
-            string fakeinput2 = "bababc"; //contains two a and three b, so it counts for both.
-            string fakeinput3 = "abbcde"; //contains two b, but no letter appears exactly three times.
-            string fakeinput4 = "abcccd"; //contains three c, but no letter appears exactly two times.
-            string fakeinput5 = "aabcdd"; //contains two a and two d, but it only counts once.
-            string fakeinput6 = "abcdee"; //contains two e.
-            string fakeinput7 = "ababab"; //contains three a and three b, but it only counts once.
-            List<string> fakeInputs = new List<string> { fakeinput1, fakeinput2, fakeinput3, fakeinput4, fakeinput5, fakeinput6, fakeinput7 };
+
+            string[] exampleInputs = new string[] { "abcdef", "bababc", "abbcde", "abcccd", "aabcdd", "abcdee", "ababab" };
+
+            
+
+            IEnumerable<string> fakeInputs = exampleInputs;
+
+
             int expectedResult = 12;
 
 
             var sut = new Day2();
 
             //Act
-            
+
             var result = sut.Day2A(fakeInputs);
 
             //Assert
@@ -34,10 +37,71 @@ namespace AdventOfCode2018
     }
     public class Day2
     {
-        int checksum;
-        public int Day2A(List<string> input)
+        private int _foundTwice;
+        private int _foundtripple;
+        internal readonly IEnumerable<string> _lines = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day2Input.txt").ToList();
+
+        public int Day2A(IEnumerable<string> input)
         {
-            return checksum;
+
+
+            foreach (string s in _lines)
+            {
+                int count = 0;
+                bool hasFoundTwice = false;
+                bool hasFoundTripple = false;
+
+                foreach (char c in s)
+                {
+                    count = s.Count(x => x == c);
+
+                    switch (count)
+                    {
+                        case 2:
+
+                            if (!hasFoundTwice)
+                            {
+                                _foundTwice++;
+                                hasFoundTwice = true;
+                            }
+                            continue;
+                        case 3:
+                            if (!hasFoundTripple)
+                            {
+                                _foundtripple++;
+                                hasFoundTripple = true;
+                            }
+                            continue;
+                        default:
+                            continue;
+
+                    }
+                }
+
+            }
+            
+            return _foundTwice * _foundtripple;
         }
     }
+
+
+
+
+
+    //public static class QueryObjects
+    //{
+
+    //    public static IQueryable<TSource> FindDouble <TSource>(this IQueryable<TSource> @this)
+    //    {
+
+
+    //        var result = @this.Where(x => x);
+
+    //        return result;
+
+    //    }
+
+
+    //}
+
 }
