@@ -140,23 +140,10 @@ namespace AdventOfCode2018
                     }
                 }
 
-                //foreach (char c in s)
-                //{
-
-                //    var result = inputs.
-                //    if (result.Count() < 0)
-                //    {
-                //        Day2B(result);
-                //        break;
-                //    }
-                //}
-
             }
 
             return null;
         }
-
-
 
     }
 
