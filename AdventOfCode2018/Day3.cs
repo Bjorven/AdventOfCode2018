@@ -6,6 +6,7 @@ using Xunit;
 using FakeItEasy;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace AdventOfCode2018
 {
@@ -16,7 +17,7 @@ namespace AdventOfCode2018
         {
             //Arrange
             string[] exampleInputs = new string []{ "#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2" };
-            IEnumerable<string> ActualInput = File.ReadLines("C:/Users/Björn/Documents/AdventOfCode2018/AdventOfCode2018/day3Input.txt");
+            IEnumerable<string> ActualInput = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day3Input.txt");
             IEnumerable<string> fakeInputs = exampleInputs;
 
             var expectedResult = 4;
@@ -34,7 +35,7 @@ namespace AdventOfCode2018
             //Arrange
             string[] exampleInputs = new string[] { "#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2" };
             IEnumerable<string> fakeInputs = exampleInputs;
-            //IEnumerable<string> ActualInput = File.ReadLines("C:/Users/Björn/Documents/AdventOfCode2018/AdventOfCode2018/day3Input.txt");
+            //IEnumerable<string> ActualInput = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day3Input.txt");
 
             var expectedResult = 3;
             var sut = new Day3();
@@ -62,7 +63,7 @@ namespace AdventOfCode2018
 
 
 
-            foreach (var line in input)
+            foreach (var line in input.ToList())
             {
                 Match match = regex.Match(line);
 
@@ -95,12 +96,12 @@ namespace AdventOfCode2018
 
         public int Day3B(IEnumerable<string> input)
         {
-            int UniqueID = 0;
+            
 
             var regex = new Regex(@"[#](\d+)\s[@]\s(\d+)[,](\d+)[:]\s(\d+)[x](\d+)");
-            HashSet<(int, int, int)> coordinates = new HashSet<(int, int,int)>();
-            HashSet<(int, int, int)> duplicates = new HashSet<(int, int, int)>();
-            HashSet<(int, int, int)> unique = new HashSet<(int, int, int)>();
+            
+            HashSet<int> unique = new HashSet<int>();
+            Dictionary<(int, int), int> junktionTable = new Dictionary<(int, int), int>();
 
             foreach (var line in input)
             {
@@ -111,23 +112,27 @@ namespace AdventOfCode2018
                 var y = int.Parse(match.Groups[3].Value);
                 var w = int.Parse(match.Groups[4].Value);
                 var h = int.Parse(match.Groups[5].Value);
+                unique.Add(id);
 
-                for (int i = x; i < x + w; i++)
+
+                for (int i = x; i < (x + w); i++)
                 {
-                    for (int j = y; j < y + h; j++)
+                    for (int j = y; j < (y + h); j++)
                     {
-                        if (!coordinates.Add((i, j, id)))
-                        {
+                        var currentPoint = (i, j);
 
+                        if (junktionTable.ContainsKey(currentPoint))
+                        {
+                            unique.Remove(junktionTable[currentPoint]);
+
+                            unique.Remove(id);
                             //remove from oldUnique, the one that conflicts with the current rectangle.
-                            if (duplicates.Add((i, j, id)))
-                            {
-                                
-                            }
+
                         }
+
                         else
                         {
-                            unique.Add((i,j,id));
+                            junktionTable.Add(currentPoint, id);
                         }
 
                     }
@@ -135,8 +140,14 @@ namespace AdventOfCode2018
 
             }
 
-            return UniqueID = unique.First().Item3;
+            return unique.First();
 
         }
     }
+    
 }
+
+
+
+                        
+                        
