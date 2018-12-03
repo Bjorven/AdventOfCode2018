@@ -102,14 +102,41 @@ namespace AdventOfCode2018
 
         public IEnumerable<string> Day2B(IEnumerable<string> inputs)
         {
-            
+            int differencesFound = 0;
+            bool matchFound = false;
+            string currItem;
 
             if (inputs.Count() == 2)
                 return inputs;
 
-            foreach(string s in inputs)
+            for(int i = 0; i< inputs.Count()-1; i ++)
             {
-                var result = inputs.TakeWhile(x=> s.Single( )
+                currItem = inputs.ElementAt(i);
+
+                foreach (string s in inputs)
+                {
+                    if (s != currItem)
+                    {
+                        for (int x = 0; i < s.Count()-1; x++)
+                        {
+                            if (s.ElementAt(x) != currItem.ElementAt(x))
+                            {
+                                differencesFound++;
+                            }
+
+                        }
+                    }
+                    switch (differencesFound)
+                    {
+                        case 1:
+                            matchFound = true;
+                            string[] r = new string[] { inputs.ElementAt(i), s };
+                            IEnumerable<string> result = r;
+                                return result;
+                        default:
+                            continue;
+                    }
+                }
 
                 //foreach (char c in s)
                 //{
