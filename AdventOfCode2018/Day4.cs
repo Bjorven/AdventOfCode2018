@@ -29,7 +29,7 @@ namespace AdventOfCode2018
     public class Day4
     {
         private Regex _regex = new Regex(@"\[(\d{4}[-]\d{2}[-]\d{2}\s\d{2}[:]\d{2})\] (Guard #(\d*) begins shift)?(falls asleep)?(wakes up)?");
-
+        
 
         public int Day4A(IEnumerable<string> input) {
             int res = 0;
@@ -39,13 +39,13 @@ namespace AdventOfCode2018
             {
                 Match match = _regex.Match(s);
 
-                var dateAndTime = match.Groups[1];
-                var wakeup = match.Groups[5];
-                var fallAsleep = match.Groups[4];
-                var beginShift = match.Groups[2];
-                var guardId = match.Groups[3];
+                var dateAndTime = Convert.ToDateTime(match.Groups[1]);
+                bool wakeup = match.Groups[5].ToString() == "wakes up" ? true : false;
+                bool fallAsleep = match.Groups[4].ToString() == "falls asleep" ? true : false;
+                string beginShift = match.Groups[2].ToString();
+                var guardId = int.Parse(match.Groups[3].ToString());
 
-
+                if(beginShift.IsNullOrWhiteSpace())
             }
 
 
