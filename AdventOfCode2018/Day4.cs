@@ -30,11 +30,12 @@ namespace AdventOfCode2018
     {
         private Regex _regex = new Regex(@"\[(\d{4}[-]\d{2}[-]\d{2}\s\d{2}[:]\d{2})\] (Guard #(\d*) begins shift)?(falls asleep)?(wakes up)?");
 
-        
-        public int Day4A(IEnumerable<string> input) {
+
+        public (int, int) Day4A(IEnumerable<string> input)
+        {
             int res = 0;
             Dictionary<DateTime, int> dateTimeAndOwner = new Dictionary<DateTime, int>();
-        public (int, int) Day4A(IEnumerable<string> input) {
+            
             int mostSleeptTotalMinutes = 0;
 
             int guardID = 0;
@@ -52,14 +53,8 @@ namespace AdventOfCode2018
                 string beginShift = match.Groups[2].Value;
                 var guardId = int.Parse(match.Groups[3].ToString());
 
-                if(string.IsNullOrWhiteSpace(beginShift))
-                {
-
-                }
-                var dateAndTime = Convert.ToDateTime(match.Groups[1].Value);
-                bool wakeup = match.Groups[5].ToString() == "wakes up" ? true : false;
-                bool fallAsleep = match.Groups[4].ToString() == "falls asleep" ? true : false;
-                string beginShift = match.Groups[2].ToString();
+                
+                
 
                 if (!string.IsNullOrWhiteSpace(match.Groups[3].Value.ToString()))
                 {
@@ -74,7 +69,7 @@ namespace AdventOfCode2018
                     {
                         fellAsleepTempSave = Convert.ToInt16(dateAndTime.Minute);
                     }
-                    if (wakeup)
+                    if (wakeUp)
                     {
                         var wokeUpAt = Convert.ToInt16(dateAndTime.Minute);
                             var timeSlept = wokeUpAt - fellAsleepTempSave;

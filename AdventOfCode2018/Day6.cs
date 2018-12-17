@@ -16,19 +16,40 @@ namespace AdventOfCode2018
         {
             //ARRANGE
             IEnumerable<string> actual = File.ReadLines("day6Input.txt");
-            List<(int, int)> a = new List<(int, int)>();
-            a.Add((1, 1));
-            a.Add((1, 6));
-            a.Add((8, 3));
-            a.Add((3, 4));
-            a.Add((5, 5));
-            a.Add((8, 9));
+            List<string> a = new List<string>();
+            a.Add("1, 1");
+            a.Add("1, 6");
+            a.Add("8, 3");
+            a.Add("3, 4");
+            a.Add("5, 5");
+            a.Add("8, 9");
             var expectedRes = 17;
-            IEnumerable<(int, int)> fakeInput = a;
+            IEnumerable<string> fakeInput = a;
             var sut = new Day6();
             //ACT
 
-            var res = sut.Day6A(actual);
+            var res = sut.Day6A(fakeInput);
+            //ASSERT
+            Assert.Equal(expectedRes, res);
+        }
+        [Fact]
+        public void TestDay6B()
+        {
+            //ARRANGE
+            IEnumerable<string> actual = File.ReadLines("day6Input.txt");
+            List<string> a = new List<string>();
+            a.Add("1, 1");
+            a.Add("1, 6");
+            a.Add("8, 3");
+            a.Add("3, 4");
+            a.Add("5, 5");
+            a.Add("8, 9");
+            var expectedRes = 16;
+            IEnumerable<string> fakeInput = a;
+            var sut = new Day6();
+            //ACT
+
+            var res = sut.Day6B(fakeInput);
             //ASSERT
             Assert.Equal(expectedRes, res);
         }
@@ -46,7 +67,7 @@ namespace AdventOfCode2018
             {
                 Match match = _regex.Match(s);
                 coordinates.Add((int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value)));
-               
+
             }
 
             int xMin = 0;
@@ -106,7 +127,7 @@ namespace AdventOfCode2018
 
             foreach (int id in infiniteIDs)
             {
-                Scheme.RemoveAll(x=>x.id ==id);
+                Scheme.RemoveAll(x => x.id == id);
             }
             Scheme.RemoveAll(x => x.id == -1);
 
@@ -118,6 +139,64 @@ namespace AdventOfCode2018
 
             return large;
         }
+
+        public int Day6B(IEnumerable<string> input)
+        {
+            List<(int, int)> coordinates = new List<(int, int)>();
+            HashSet<(int, int)> safeCoordinates = new HashSet<(int, int)>();
+
+            foreach (string s in input.ToList())
+            {
+                Match match = _regex.Match(s);
+                coordinates.Add((int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value)));
+
+            }
+
+            int xMin = 0;
+            int xMax = 0;
+            int yMin = 0;
+            int yMax = 0;
+            
+
+            foreach ((int, int) tuple in coordinates)
+            {
+
+                
+                if (xMax < tuple.Item1)
+                {
+                    xMax = tuple.Item1;
+                }
+                if (yMax < tuple.Item2)
+                {
+                    yMax = tuple.Item2;
+                }
+
+            }
+
+            for (int Y = yMin; Y <= yMax; Y++)
+            {
+
+                for (int X = xMin; X <= xMax; X++)
+                {
+
+                    var tempDistance = 0;
+
+                    foreach (var (x, y) in coordinates)
+                    {
+                        tempDistance += Math.Abs(x - X) + Math.Abs(y - Y);
+                    }
+
+                    if (tempDistance < 32)
+                    {
+                        safeCoordinates.Add((X, Y));
+                    }
+
+                }
+            }
+
+                    return safeCoordinates.Count;
+        }
+
     }
 
     public class Coordinate
