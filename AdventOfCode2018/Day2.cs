@@ -40,14 +40,14 @@ namespace AdventOfCode2018
             //ARRANGE
             string[] exampleInputs = new string[] { "abcde", "fghij", "klmno", "pqrst", "fguij", "axcye", "wvxyz" };
 
-            IEnumerable<string> _lines = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day2Input.txt").ToList();
+            //IEnumerable<string> _lines = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day2Input.txt").ToList();
             IEnumerable<string> fakeInputs = exampleInputs;
             var expectedResult = 2;
 
             var sut = new Day2();
 
             //ACT
-            var result = sut.Day2B(_lines);
+            var result = sut.Day2B(fakeInputs);
 
             //ASSERT
             Assert.Equal(expectedResult, result.Count());
@@ -57,7 +57,7 @@ namespace AdventOfCode2018
     {
         private int _foundTwice;
         private int _foundtripple;
-        internal readonly IEnumerable<string> _lines = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day2Input.txt").ToList();
+        //internal readonly IEnumerable<string> _lines = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day2Input.txt").ToList();
 
         public int Day2A(IEnumerable<string> input)
         {

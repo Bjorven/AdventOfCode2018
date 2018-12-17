@@ -13,7 +13,7 @@ namespace AdventOfCode2018
         {
             //Arrange
             string[] exampleInputs = new string []{ "#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2" };
-            IEnumerable<string> ActualInput = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day3Input.txt");
+            //IEnumerable<string> ActualInput = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day3Input.txt");
             IEnumerable<string> fakeInputs = exampleInputs;
 
             var expectedResult = 4;
