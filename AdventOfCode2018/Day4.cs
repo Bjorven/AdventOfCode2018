@@ -17,7 +17,7 @@ namespace AdventOfCode2018
           //  IEnumerable<string> ActualInput = File.ReadLines("C:/Users/Svejk/Documents/AdventOfCode2018/AdventOfCode2018/day4Input.txt");
             IEnumerable<string> fakeInputs = exampleInputs;
 
-            var expectedResult = 10;
+            var expectedResult = (10, 24);
             var sut = new Day4();
             //Act
             var result = sut.Day4A(fakeInputs);
@@ -31,25 +31,82 @@ namespace AdventOfCode2018
         private Regex _regex = new Regex(@"\[(\d{4}[-]\d{2}[-]\d{2}\s\d{2}[:]\d{2})\] (Guard #(\d*) begins shift)?(falls asleep)?(wakes up)?");
         
 
-        public int Day4A(IEnumerable<string> input) {
-            int res = 0;
-            Dictionary<DateTime, int> dateTimeAndOwner = new Dictionary<DateTime, int>();
+        public (int, int) Day4A(IEnumerable<string> input) {
+            int mostSleeptTotalMinutes = 0;
 
+            int guardID = 0;
+            LinkedList<(int, int)> amountOfMinAlsleepAndOwner = new LinkedList<(int, int)>();
+            LinkedList<(IEnumerable<int>, Guard) > minutesSleptOwner = new LinkedList<(IEnumerable<int>, Guard)>();
+
+            int fellAsleepTempSave = 0;
             foreach(string s in input.ToList())
             {
                 Match match = _regex.Match(s);
 
-                var dateAndTime = Convert.ToDateTime(match.Groups[1]);
+                var dateAndTime = Convert.ToDateTime(match.Groups[1].Value);
                 bool wakeup = match.Groups[5].ToString() == "wakes up" ? true : false;
                 bool fallAsleep = match.Groups[4].ToString() == "falls asleep" ? true : false;
                 string beginShift = match.Groups[2].ToString();
-                var guardId = int.Parse(match.Groups[3].ToString());
 
-                if(beginShift.IsNullOrWhiteSpace())
+                if (!string.IsNullOrWhiteSpace(match.Groups[3].Value.ToString()))
+                {
+                    guardID = Convert.ToInt32(match.Groups[3].Value);
+                }
+                    
+                
+                
+                if (string.IsNullOrWhiteSpace(beginShift))
+                {
+                    if (fallAsleep)
+                    {
+                        fellAsleepTempSave = Convert.ToInt16(dateAndTime.Minute);
+                    }
+                    if (wakeup)
+                    {
+                        var wokeUpAt = Convert.ToInt16(dateAndTime.Minute);
+                            var timeSlept = wokeUpAt - fellAsleepTempSave;
+                            
+                            amountOfMinAlsleepAndOwner.AddLast((guardID, timeSlept));
+                        minutesSleptOwner.AddLast((Enumerable.Range(fellAsleepTempSave, wokeUpAt), new Guard { ID = guardID, AmountSleeptOnDuty = timeSlept, IsSleeping = false }));
+
+
+                    }
+                }
+                else
+                {
+
+                }
+                
             }
+            
+            var guards = amountOfMinAlsleepAndOwner.Select(x => x.Item1).Distinct().ToList();
+            foreach (int guard in guards)
+            {
+                var result = amountOfMinAlsleepAndOwner.Where(x => x.Item1 == guard).Sum(x => x.Item2);
+                if (result > mostSleeptTotalMinutes)
+                {
+                    mostSleeptTotalMinutes = result;
+                    guardID = guard;
+                }  
 
-
-            return res;
+            }
+            var minuteToEnter = 0;
+            
+            //var minuteToEnter = minutesSleptOwner.Select(x => x.Item1.Where(x => x.Item2.ID == guardID));
+            return (guardID, minuteToEnter);
         }
+    }
+    public class Guard
+    {
+        public int ID { get; set; }
+        public bool IsSleeping { get; set; }
+        public int AmountSleeptOnDuty { get; set; }
+        public IEnumerable<int> ShiftDuration { get; set; }
+
+        public Guard()
+        {
+            ShiftDuration = Enumerable.Range(0, 60);
+        }
+
     }
 }
